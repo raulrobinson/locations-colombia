@@ -1,0 +1,56 @@
+# ---------------------------------
+# --- APP General Configuration ---
+# ---------------------------------
+spring:
+  application:
+    name: @project.name@
+  security:
+    user:
+      password: 'R@5y5b0x!'
+  protocol: 'http'
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+info:
+  project-version: @project.version@
+  build-timestamp: ${maven.build.timestamp}
+controller:
+  properties:
+    base-path: /api/v1/@project.name@
+
+# ---------------
+# --- OPENAPI ---
+# ---------------
+springdoc:
+  swagger-ui:
+    use-root-path: true
+  properties:
+    developer-name: 'Raul Bolivar Navas'
+    organization-url: 'https://rasysbox.com'
+    project-licence-link: 'https://rasysbox.com/License'
+    project-licence-msg: 'https://rasysbox.com/LicenceMsg'
+    project-name: @project.name@
+    project-short-description: @project.description@
+    project-tos-link: 'https://rasysbox.com/TermOfService'
+    project-tos-msg: 'https://rasysbox.com/termOfServiceMsg'
+  openapi:
+    dev-url: ${spring.protocol}://${springdoc.server.address}:${springdoc.server.port}
+
+# ---------------
+# --- METRICS ---
+# ---------------
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      status:
+        http-mapping:
+          down: 500
+      show-details: always
+  http exchanges:
+    recording:
+      include: request-headers,time-taken,session-id
